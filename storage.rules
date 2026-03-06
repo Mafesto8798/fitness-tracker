@@ -1,0 +1,28 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Helper function to check if user is authenticated
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Profile photos - users can only upload/manage their own photos
+    match /profile-photos/{userId}/{fileName} {
+      // Allow read if authenticated
+      allow read: if isSignedIn();
+
+      // Allow write (upload/update/delete) only for own files
+      allow write: if isSignedIn()
+                   && request.auth.uid == userId
+                   && request.resource.size < 5 * 1024 * 1024  // Max 5MB
+                   && request.resource.contentType.matches('image/.*');  // Only images
+    }
+
+    // Deny all other access
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
