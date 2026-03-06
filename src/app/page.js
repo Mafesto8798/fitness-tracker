@@ -6,9 +6,10 @@ import { useAuth } from '@/hooks/useAuth';
 import LoadingSpinner from '@/app/components/LoadingSpinner';
 
 export default function Login() {
-  const { user, loading, signInWithGoogle } = useAuth();
+  const { user, loading, signInWithGoogle, signInAsGuest } = useAuth();
   const router = useRouter();
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const [isGuestSigningIn, setIsGuestSigningIn] = useState(false);
   const [error, setError] = useState('');
 
   // Redirect if already logged in
@@ -23,11 +24,22 @@ export default function Login() {
       setIsSigningIn(true);
       setError('');
       await signInWithGoogle();
-      // Router will redirect in useEffect after user state updates
     } catch (error) {
       console.error('Sign in error:', error);
       setError('Failed to sign in with Google. Please try again.');
       setIsSigningIn(false);
+    }
+  };
+
+  const handleGuestSignIn = async () => {
+    try {
+      setIsGuestSigningIn(true);
+      setError('');
+      await signInAsGuest();
+    } catch (error) {
+      console.error('Guest sign in error:', error);
+      setError('Failed to start guest session. Please try again.');
+      setIsGuestSigningIn(false);
     }
   };
 
@@ -95,10 +107,23 @@ export default function Login() {
               )}
             </button>
 
-            <div className="text-center text-sm" style={{ color: 'var(--text-secondary)' }}>
-              <p>
-                By signing in, you agree to our Terms of Service and Privacy Policy
-              </p>
+            <div className="flex items-center gap-3">
+              <div className="flex-1 h-px" style={{ background: 'var(--border-accent)' }} />
+              <span className="text-xs font-medium" style={{ color: 'var(--text-light)' }}>or</span>
+              <div className="flex-1 h-px" style={{ background: 'var(--border-accent)' }} />
+            </div>
+
+            <button
+              onClick={handleGuestSignIn}
+              disabled={isGuestSigningIn || isSigningIn}
+              className="w-full py-3 px-6 rounded-full font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ background: 'var(--input-background)', color: 'var(--text-secondary)', border: '1.5px solid var(--border-accent)' }}
+            >
+              {isGuestSigningIn ? 'Starting guest session…' : 'Try as Guest'}
+            </button>
+
+            <div className="text-center text-xs" style={{ color: 'var(--text-light)' }}>
+              Guest data is temporary and deleted on sign out.
             </div>
           </div>
         </div>

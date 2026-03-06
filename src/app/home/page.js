@@ -15,7 +15,7 @@ function HomeContent() {
   const router = useRouter();
   const [activeView, setActiveView] = useState('dashboard');
   const { clearWorkouts } = useWorkouts();
-  const { signOut, userProfile } = useAuth();
+  const { signOut, userProfile, isGuest } = useAuth();
 
   const handleLogout = async () => {
     clearWorkouts();
@@ -56,6 +56,21 @@ function HomeContent() {
             </span>
           </button>
         </div>
+
+        {/* Guest banner */}
+        {isGuest && (
+          <div className="flex items-center justify-between gap-3 mb-5 px-4 py-2.5 rounded-xl text-sm font-medium" style={{background: 'rgba(107,155,111,0.12)', color: 'var(--primary)', border: '1px solid rgba(107,155,111,0.25)'}}>
+            <div className="flex items-center gap-2">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 flex-shrink-0">
+                <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
+              </svg>
+              <span>Guest mode — data is for demo only and will be deleted on sign out.</span>
+            </div>
+            <button onClick={() => router.push('/')} className="font-semibold whitespace-nowrap underline underline-offset-2 bg-transparent border-none cursor-pointer" style={{color: 'var(--primary)'}}>
+              Sign in
+            </button>
+          </div>
+        )}
 
         {/* Tab Navigation (Desktop) */}
         <TabNavigation activeView={activeView} onViewChange={setActiveView} />
