@@ -49,7 +49,7 @@ export default function Login() {
         <div className="card">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-extrabold text-primary-color mb-2">
-              Fitness Tracker
+              My Fitness Log
             </h1>
             <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
               Track your workouts and achieve your fitness goals
