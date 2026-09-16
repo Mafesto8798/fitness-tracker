@@ -4,6 +4,7 @@ import { WorkoutProvider } from "./context/WorkoutContext";
 import { ToastProvider } from "./context/ToastContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { ExerciseTemplateProvider } from "./context/ExerciseTemplateContext";
+import RegisterServiceWorker from "./RegisterServiceWorker";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,8 +17,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Fitness Tracker",
+  title: "My Fitness Log",
   description: "Track your workouts and achieve your fitness goals",
+  manifest: "/manifest.json",
+};
+
+export const viewport = {
+  themeColor: "#1abc9c",
 };
 
 export default function RootLayout({ children }) {
@@ -26,6 +32,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <RegisterServiceWorker />
         <AuthProvider>
           <ToastProvider>
             <WorkoutProvider>

@@ -53,7 +53,8 @@ export function getWorkoutsInRange(workouts, startDate, endDate) {
     // Skip templates (they don't have dates)
     if (workout.isTemplate) return false;
 
-    const workoutDate = new Date(workout.date);
+    const [y, m, d] = workout.date.split('-').map(Number);
+    const workoutDate = new Date(y, m - 1, d);
     return workoutDate >= startDate && workoutDate <= endDate;
   });
 }

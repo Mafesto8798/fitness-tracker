@@ -66,7 +66,7 @@ function HomeContent() {
               </svg>
               <span>Guest mode — data is for demo only and will be deleted on sign out.</span>
             </div>
-            <button onClick={() => router.push('/')} className="font-semibold whitespace-nowrap underline underline-offset-2 bg-transparent border-none cursor-pointer" style={{color: 'var(--primary)'}}>
+            <button onClick={signOut} className="font-semibold whitespace-nowrap underline underline-offset-2 bg-transparent border-none cursor-pointer" style={{color: 'var(--primary)'}}>
               Sign in
             </button>
           </div>

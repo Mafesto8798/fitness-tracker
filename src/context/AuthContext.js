@@ -12,7 +12,6 @@ import {
   collection, query, where, getDocs, deleteDoc, addDoc,
 } from 'firebase/firestore';
 import { auth, googleProvider, db } from '@/lib/firebase';
-import { useRouter } from 'next/navigation';
 
 const AuthContext = createContext({});
 
@@ -86,7 +85,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
@@ -166,7 +164,7 @@ export function AuthProvider({ children }) {
       await firebaseSignOut(auth);
       setUser(null);
       setUserProfile(null);
-      router.push('/');
+      window.location.href = '/';
     } catch (error) {
       console.error('Error signing out:', error);
       throw error;
